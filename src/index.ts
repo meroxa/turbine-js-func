@@ -1,24 +1,20 @@
 import path from "path";
-
-const args = process.argv.slice(2);
-
-const FUNCTION_NAME = args[0];
-const PATH_TO_DATA_APP = args[1] || "/data-app";
-const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDR;
-const PROTO_PATH = path.join(__dirname, "proto/service.proto");
-
 import { Record } from "./record";
 
-export default function startServer() {
-  const DataApp = require(PATH_TO_DATA_APP).App;
-  const dataApp = new DataApp();
+export default function startServer(
+  functionAddress: string,
+  functionName: string,
+  pathToDataApp: string
+) {
+  const DataApp = require(pathToDataApp).App;
 
   function processFunction(call: any, callback: any) {
+    const dataApp = new DataApp();
     const inputRecords = call.request.records.map((record: any) => {
       return new Record(record);
     });
 
-    const dataAppFunction = dataApp[FUNCTION_NAME];
+    const dataAppFunction = dataApp[functionName];
 
     const outputRecords = dataAppFunction(inputRecords);
 
@@ -33,10 +29,13 @@ export default function startServer() {
 
   const grpc = require("@grpc/grpc-js");
   const protoLoader = require("@grpc/proto-loader");
-  const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-    keepCase: true,
-    defaults: true,
-  });
+  const packageDefinition = protoLoader.loadSync(
+    path.join(__dirname, "proto/service.proto"),
+    {
+      keepCase: true,
+      defaults: true,
+    }
+  );
 
   const serviceProto =
     grpc.loadPackageDefinition(packageDefinition).io.meroxa.funtime;
@@ -56,11 +55,11 @@ export default function startServer() {
   server.addService(health.service, healthImpl);
 
   server.bindAsync(
-    FUNCTION_ADDRESS,
+    functionAddress,
     grpc.ServerCredentials.createInsecure(),
     () => {
       server.start();
-      console.log(`gRPC server started at ${FUNCTION_ADDRESS}`);
+      console.log(`gRPC server started at ${functionAddress}`);
     }
   );
 }
