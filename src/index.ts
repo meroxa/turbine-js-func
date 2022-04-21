@@ -1,9 +1,11 @@
+import path from "path";
+
 const args = process.argv.slice(2);
 
 const FUNCTION_NAME = args[0];
 const PATH_TO_DATA_APP = args[1] || "/data-app";
 const FUNCTION_ADDRESS = process.env.MEROXA_FUNCTION_ADDR;
-const PROTO_PATH = __dirname + "/proto/service.proto";
+const PROTO_PATH = path.join(__dirname, "proto/service.proto");
 
 import { Record } from "./record";
 

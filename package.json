@@ -1,7 +1,7 @@
 {
   "name": "@meroxa/turbine-js-func",
   "version": "1.0.0",
-  "description": "Function wrapper to execute turbine-js functions",
+  "description": "a gRPC server that wraps and executes turbine-js functions",
   "main": "index.js",
   "scripts": {
     "build:dev": "tsc && npm run finish-build",
@@ -10,7 +10,7 @@
     "finish-build": "node scripts/finish-build.js"
   },
   "author": "James Martinez <james@meroxa.io>",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.MD",
   "devDependencies": {
     "@types/node": "^17.0.4",
     "@types/qunit": "^2.11.3",
@@ -23,5 +23,6 @@
     "google-protobuf": "^3.19.1",
     "grpc-js-health-check": "^1.0.2"
   },
-  "bin": "bin/turbine-js-func"
+  "bin": "bin/turbine-js-func",
+  "files": ["lib/**/*"]
 }
