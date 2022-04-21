@@ -1,6 +1,6 @@
 {
   "name": "@meroxa/turbine-js-func",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a gRPC server that wraps and executes turbine-js functions",
   "main": "index.js",
   "scripts": {
